@@ -24,7 +24,7 @@ class StoreScheduleRequest extends FormRequest
         return [
             'title' => 'string',
             'description' => 'string',
-            'date' => 'required|string',
+            'date' => 'date',
             'user_id' => 'integer',
         ];
     }

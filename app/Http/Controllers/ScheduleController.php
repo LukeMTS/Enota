@@ -14,13 +14,15 @@ class ScheduleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Schedule::query();
-        
+        $query = Schedule::where('user_id', auth()->user()->id);
+
         if ($request->date) {
             $query->whereDate('date', $request->date);
         }
 
-        return $query->simplePaginate(20);
+        $schedules = $query->simplePaginate(20);
+
+        return view('dashboard', compact('schedules'));
     }
 
     /**
@@ -60,7 +62,7 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        return $schedule->update($request->all());
+        return $schedule->update($request->validated());
     }
 
     /**
@@ -68,6 +70,8 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        return $schedule->delete();
+        $schedule->delete();
+
+        return redirect()->route('dashboard');
     }
 }
